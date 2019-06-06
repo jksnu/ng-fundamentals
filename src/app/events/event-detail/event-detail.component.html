@@ -1,0 +1,52 @@
+<div>
+  <h3>Event Detail</h3>
+  <hr>
+  <div class="well hoverwell thumbnail">
+    <h4>{{event?.name | uppercase}}</h4>
+    <div>Date: {{event?.date | date:shortDate}}</div>
+    <div>Time: {{event?.time}}</div>
+    <div>Price: {{event?.price | currency:dollor}}</div>
+    <div>
+      <span>Location: {{event?.location?.address}}</span>
+      <span>&nbsp;</span>
+      <span>{{event?.location?.city}}, {{event?.location?.country}}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <h3>Session List</h3>
+    </div>
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-4 float-right"><span style="margin-top:10px"> Session Filter: </span></div>
+        <div class="col-md-6 float-left" (change)="sessionFilter($event.target.value)" >
+          <select class="form-control"> 
+            <option value="">Select level...</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+        </div>
+      </div>      
+    </div>
+    <div class="col-md-3">
+      <div class="row">
+        <div class="col-md-4 float-right"><span style="margin-top:10px"> Sort By: </span></div>
+        <div class="col-md-6 float-left"  >
+          <select class="form-control" (change)="sessionSort($event.target.value)"> 
+              <option value="votersDesc">Voters Desc</option>
+            <option value="nameAsc" selected>Name Asc</option>            
+          </select>
+        </div>
+      </div>      
+    </div>
+    <div class="col-md-3 float-right">
+      <a (click)="addSession()" class="float-right" *ngIf="!isAddSessionEnabled"><span style="margin-top:10px">Add new session</span></a>
+    </div>
+  </div>
+  <hr>
+  <div>    
+    <app-sessions [sessions]='event?.sessions' *ngIf="!isAddSessionEnabled" [sessionSortBy]="sortBy" [sessionFilterBy]="filterValue"></app-sessions>
+    <app-create-session *ngIf="isAddSessionEnabled" [currentEvent]="event" (addSesssionEvent)="addNewSession($event)" (sessionCreateCancelEvent)="handleSessionCreateCancel()"></app-create-session>
+  </div>
+</div>

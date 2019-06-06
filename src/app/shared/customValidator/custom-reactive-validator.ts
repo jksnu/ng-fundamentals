@@ -1,0 +1,12 @@
+import { AbstractControl } from '@angular/forms';
+
+export function validateRestrictedWords(words: string[]){
+    return (control: AbstractControl): {[key: string]: any} => {
+        if(! words)
+            return null;
+        var invalidWords = words
+            .map(word => control.value.includes(word)? word: null)
+            .filter(word => word != null);
+        return invalidWords && invalidWords.length > 0? {'restrictedWords': invalidWords.join(',')}: null;
+    }
+}
